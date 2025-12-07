@@ -1,0 +1,23 @@
+{
+  "name": "RECKE - LinkedIn Puzzle Tracker",
+  "short_name": "RECKE",
+  "description": "Track your LinkedIn puzzle scores with colleagues. Compete in Zip & Queens!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1E88E5",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+

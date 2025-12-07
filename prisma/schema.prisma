@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id                 String         @id @default(cuid())
+  name               String?
+  email              String?        @unique
+  emailVerified      DateTime?
+  image              String?
+  linkedinId         String?        @unique
+  showInGlobal       Boolean        @default(false)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  accounts           Account[]
+  sessions           Session[]
+  groupMemberships   GroupMember[]
+  scores             Score[]
+  createdGroups      Group[]        @relation("GroupCreator")
+  invitationsSent    Invitation[]   @relation("InvitationSender")
+  invitationsReceived Invitation[]  @relation("InvitationReceiver")
+}
+
+model Group {
+  id          String        @id @default(cuid())
+  name        String
+  createdById String
+  createdBy   User          @relation("GroupCreator", fields: [createdById], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  members     GroupMember[]
+  scores      Score[]
+  invitations Invitation[]
+
+  @@index([createdById])
+}
+
+model GroupMember {
+  id        String   @id @default(cuid())
+  groupId   String
+  userId    String
+  role      String   @default("member") // "admin" or "member"
+  joinedAt  DateTime @default(now())
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([groupId])
+  @@index([userId])
+}
+
+model Invitation {
+  id         String   @id @default(cuid())
+  groupId    String
+  senderId   String
+  receiverId String
+  status     String   @default("pending") // "pending", "accepted", "declined"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sender     User     @relation("InvitationSender", fields: [senderId], references: [id])
+  receiver   User     @relation("InvitationReceiver", fields: [receiverId], references: [id])
+
+  @@index([groupId])
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([status])
+}
+
+enum GameType {
+  ZIP
+  QUEENS
+}
+
+model Score {
+  id          String   @id @default(cuid())
+  groupId     String
+  userId      String
+  game        GameType
+  points      Int      // 1 for win, 0 for loss
+  time        String?  // Time taken (for tie-breaking)
+  backtracks  Int?     // Number of backtracks (for tie-breaking in Queens)
+  date        DateTime @db.Date
+  enteredBy   String   // User ID who entered the score
+  notes       String?  @db.Text
+  createdAt   DateTime @default(now())
+  group       Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId, game, date])
+  @@index([groupId])
+  @@index([userId])
+  @@index([date])
+  @@index([game])
+}
+

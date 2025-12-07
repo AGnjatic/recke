@@ -1,0 +1,49 @@
+import { NextAuthOptions } from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { prisma } from "./prisma"
+
+// GOOGLE OAUTH ALTERNATIVE - EASIER TO SET UP!
+// 
+// To use Google instead of LinkedIn:
+// 1. Rename this file to: lib/auth.ts (replacing the current one)
+// 2. Get Google OAuth credentials:
+//    - Go to: https://console.cloud.google.com/
+//    - Create a new project
+//    - Enable "Google+ API"
+//    - Go to Credentials > Create Credentials > OAuth 2.0 Client ID
+//    - Application type: Web application
+//    - Authorized redirect URIs: http://localhost:3000/api/auth/callback/google
+//    - Copy Client ID and Client Secret
+// 3. Update .env:
+//    GOOGLE_CLIENT_ID="your-google-client-id"
+//    GOOGLE_CLIENT_SECRET="your-google-client-secret"
+// 4. Restart dev server
+// 5. Done! No approval needed, works instantly.
+
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+  ],
+  callbacks: {
+    async session({ session, user }) {
+      if (session.user) {
+        session.user.id = user.id
+      }
+      return session
+    },
+  },
+  pages: {
+    signIn: '/auth/signin',
+  },
+  session: {
+    strategy: "database",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+}
+
