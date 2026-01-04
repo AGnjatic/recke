@@ -100,7 +100,7 @@ export function InlineScoreTracker({
       })
 
       if ("error" in zipResult) {
-        setError(zipResult.error)
+        setError(zipResult.error || "An error occurred")
         setSaving(false)
         return
       }
@@ -117,7 +117,7 @@ export function InlineScoreTracker({
       })
 
       if ("error" in queensResult) {
-        setError(queensResult.error)
+        setError(queensResult.error || "An error occurred")
         setSaving(false)
         return
       }

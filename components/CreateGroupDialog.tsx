@@ -38,7 +38,7 @@ export function CreateGroupDialog({
     const result = await createGroup(formData)
 
     if ("error" in result) {
-      setError(result.error)
+      setError(result.error || "An error occurred")
       setLoading(false)
     } else {
       setName("")

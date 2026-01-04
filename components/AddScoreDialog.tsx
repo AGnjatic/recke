@@ -92,7 +92,7 @@ export function AddScoreDialog({
     })
 
     if ("error" in result) {
-      setError(result.error)
+      setError(result.error || "An error occurred")
       setLoading(false)
     } else {
       // Reset form

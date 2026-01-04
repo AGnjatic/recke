@@ -1,6 +1,6 @@
 {
   "name": "linkedin-puzzle-tracker",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -26,7 +26,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.294.0",
-    "next": "14.2.15",
+    "next": "14.2.35",
     "next-auth": "^4.24.10",
     "@auth/prisma-adapter": "^1.6.0",
     "react": "^18.3.1",

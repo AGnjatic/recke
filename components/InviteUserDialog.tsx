@@ -43,7 +43,7 @@ export function InviteUserDialog({
     const result = await inviteUserToGroup(formData)
 
     if ("error" in result) {
-      setError(result.error)
+      setError(result.error || "An error occurred")
       setLoading(false)
     } else {
       setSuccessMessage(result.message || "Invitation sent!")

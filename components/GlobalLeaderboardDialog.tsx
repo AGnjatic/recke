@@ -46,7 +46,7 @@ export function GlobalLeaderboardDialog() {
     setLoading(true)
     const result = await getGlobalLeaderboard()
     if ("leaderboard" in result) {
-      setLeaderboard(result.leaderboard)
+      setLeaderboard(result.leaderboard || [])
     }
     setLoading(false)
   }
