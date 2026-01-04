@@ -59,29 +59,35 @@ export function GroupClient({
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <Image src="/logo.svg" alt="RECKE Logo" width={32} height={32} />
-                <span className="font-semibold text-blue-600">RECKE</span>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+              <Link href="/dashboard" className="flex items-center gap-1.5 sm:gap-2 hover:opacity-80 transition-opacity flex-shrink-0">
+                <Image 
+                  src="/logo.svg" 
+                  alt="RECKE Logo" 
+                  width={24} 
+                  height={24}
+                  className="sm:w-8 sm:h-8"
+                />
+                <span className="font-semibold text-blue-600 text-sm sm:text-base hidden sm:inline">RECKE</span>
               </Link>
-              <div className="h-8 w-px bg-gray-300"></div>
-              <div className="flex items-center gap-2">
-                <Link href="/dashboard">
-                  <Button variant="ghost" size="sm">
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Back
+              <div className="h-6 sm:h-8 w-px bg-gray-300 hidden sm:block"></div>
+              <div className="flex items-center gap-1 sm:gap-2 min-w-0 flex-1">
+                <Link href="/dashboard" className="flex-shrink-0">
+                  <Button variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-3">
+                    <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Back</span>
                   </Button>
                 </Link>
-                <h1 className="text-xl font-bold text-gray-900">{group.name}</h1>
+                <h1 className="text-base sm:text-xl font-bold text-gray-900 truncate">{group.name}</h1>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
               {isAdmin && (
-                <Button variant="outline" size="sm" onClick={() => setInviteUserOpen(true)}>
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Invite
+                <Button variant="outline" size="sm" onClick={() => setInviteUserOpen(true)} className="text-xs sm:text-sm px-2 sm:px-3">
+                  <UserPlus className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Invite</span>
                 </Button>
               )}
             </div>
@@ -89,59 +95,59 @@ export function GroupClient({
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* Inline Score Tracker */}
         <div>
-          <h2 className="text-2xl font-bold mb-4">Track Scores</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Track Scores</h2>
           <InlineScoreTracker groupId={group.id} members={group.members} />
         </div>
 
         {/* Leaderboard */}
         <div>
-          <h2 className="text-2xl font-bold mb-4">Leaderboard</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Leaderboard</h2>
           <GroupLeaderboard group={group} />
         </div>
 
         {/* Trends */}
         <div>
-          <h2 className="text-2xl font-bold mb-4">Trends</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Trends</h2>
           <TrendChart scores={group.scores} members={group.members} />
         </div>
 
         {/* History */}
         <div>
-          <h2 className="text-2xl font-bold mb-4">Score History</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Score History</h2>
           <Card>
             <CardHeader>
-              <CardTitle>Recent Games</CardTitle>
-              <CardDescription>Last 50 game results</CardDescription>
+              <CardTitle className="text-lg sm:text-xl">Recent Games</CardTitle>
+              <CardDescription className="text-sm">Last 50 game results</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {group.scores.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8">
+                  <p className="text-sm text-gray-500 text-center py-6 sm:py-8">
                     No scores yet. Add your first score to get started!
                   </p>
                 ) : (
                   group.scores.slice(0, 50).map((score) => (
                     <div
                       key={score.id}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg gap-3"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">
+                      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-sm sm:text-base flex-shrink-0">
                           {score.user.name?.charAt(0) || "?"}
                         </div>
-                        <div>
-                          <p className="font-medium">{score.user.name}</p>
-                          <p className="text-sm text-gray-500">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-sm sm:text-base truncate">{score.user.name}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">
                             {new Date(score.date).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold">
-                          {score.game} - {score.points} point{score.points !== 1 ? "s" : ""}
+                      <div className="text-right flex-shrink-0">
+                        <p className="font-semibold text-sm sm:text-base">
+                          {score.game} - {score.points}pt{score.points !== 1 ? "s" : ""}
                         </p>
                       </div>
                     </div>
