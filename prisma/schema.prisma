@@ -91,18 +91,20 @@ model Invitation {
   id         String   @id @default(cuid())
   groupId    String
   senderId   String
-  receiverId String
+  receiverId String?  // Nullable for pending invitations to users who haven't signed up
+  email      String   // Email address of the invited user
   status     String   @default("pending") // "pending", "accepted", "declined"
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
   sender     User     @relation("InvitationSender", fields: [senderId], references: [id])
-  receiver   User     @relation("InvitationReceiver", fields: [receiverId], references: [id])
+  receiver   User?    @relation("InvitationReceiver", fields: [receiverId], references: [id])
 
   @@index([groupId])
   @@index([senderId])
   @@index([receiverId])
   @@index([status])
+  @@index([email])
 }
 
 enum GameType {

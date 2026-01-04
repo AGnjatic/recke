@@ -86,42 +86,42 @@ export async function inviteUserToGroup(formData: FormData) {
       where: { email: data.email },
     })
 
-    if (!invitedUser) {
-      return { error: "User not found with this email" }
-    }
-
-    // Check if already a member
-    const existingMember = await prisma.groupMember.findUnique({
-      where: {
-        groupId_userId: {
-          groupId: data.groupId,
-          userId: invitedUser.id,
+    // If user exists, check if already a member
+    if (invitedUser) {
+      const existingMember = await prisma.groupMember.findUnique({
+        where: {
+          groupId_userId: {
+            groupId: data.groupId,
+            userId: invitedUser.id,
+          },
         },
-      },
-    })
+      })
 
-    if (existingMember) {
-      return { error: "User is already a member of this group" }
+      if (existingMember) {
+        return { error: "User is already a member of this group" }
+      }
     }
 
-    // Check for existing pending invitation
+    // Check for existing pending invitation (by email)
     const existingInvitation = await prisma.invitation.findFirst({
       where: {
         groupId: data.groupId,
-        receiverId: invitedUser.id,
+        email: data.email,
         status: "pending",
       },
     })
 
     if (existingInvitation) {
-      return { error: "Invitation already sent to this user" }
+      return { error: "Invitation already sent to this email" }
     }
 
+    // Create invitation (with or without receiverId)
     const invitation = await prisma.invitation.create({
       data: {
         groupId: data.groupId,
         senderId: session.user.id,
-        receiverId: invitedUser.id,
+        receiverId: invitedUser?.id || null,
+        email: data.email,
       },
       include: {
         group: true,
@@ -131,7 +131,21 @@ export async function inviteUserToGroup(formData: FormData) {
     })
 
     revalidatePath("/dashboard")
-    return { success: true, invitation }
+    
+    // Return different success messages based on whether user exists
+    if (invitedUser) {
+      return { 
+        success: true, 
+        invitation,
+        message: "Invitation sent! They'll see it when they sign in." 
+      }
+    } else {
+      return { 
+        success: true, 
+        invitation,
+        message: "Invitation sent! They'll see it when they create an account with this email." 
+      }
+    }
   } catch (error) {
     console.error("Error inviting user:", error)
     return { error: "Failed to send invitation" }
@@ -254,11 +268,24 @@ export async function getMyGroups() {
 export async function getPendingInvitations() {
   const session = await getServerSession(authOptions)
   
-  if (!session?.user?.id) {
+  if (!session?.user?.id || !session?.user?.email) {
     return { error: "Unauthorized" }
   }
 
   try {
+    // First, link any pending invitations to this user's account
+    await prisma.invitation.updateMany({
+      where: {
+        email: session.user.email,
+        receiverId: null,
+        status: "pending",
+      },
+      data: {
+        receiverId: session.user.id,
+      },
+    })
+
+    // Now fetch all pending invitations for this user
     const invitations = await prisma.invitation.findMany({
       where: {
         receiverId: session.user.id,

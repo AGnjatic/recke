@@ -27,14 +27,14 @@ export function InviteUserDialog({
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
+  const [successMessage, setSuccessMessage] = useState("")
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError("")
-    setSuccess(false)
+    setSuccessMessage("")
 
     const formData = new FormData()
     formData.append("groupId", groupId)
@@ -46,13 +46,13 @@ export function InviteUserDialog({
       setError(result.error)
       setLoading(false)
     } else {
-      setSuccess(true)
+      setSuccessMessage(result.message || "Invitation sent!")
       setEmail("")
       setTimeout(() => {
-        setSuccess(false)
+        setSuccessMessage("")
         onOpenChange(false)
         router.refresh()
-      }, 1500)
+      }, 2500)
     }
   }
 
@@ -63,7 +63,8 @@ export function InviteUserDialog({
           <DialogHeader>
             <DialogTitle>Invite User</DialogTitle>
             <DialogDescription>
-              Invite a colleague by their email address
+              Enter the email address of the person you want to invite. 
+              They'll see the invitation when they sign in (or create an account with this email).
             </DialogDescription>
           </DialogHeader>
 
@@ -79,8 +80,8 @@ export function InviteUserDialog({
               className="mt-2"
             />
             {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
-            {success && (
-              <p className="text-sm text-green-600 mt-2">Invitation sent!</p>
+            {successMessage && (
+              <p className="text-sm text-green-600 mt-2">{successMessage}</p>
             )}
           </div>
 
@@ -93,8 +94,8 @@ export function InviteUserDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={loading || success}>
-              {loading ? "Sending..." : success ? "Sent!" : "Send Invitation"}
+            <Button type="submit" disabled={loading || !!successMessage}>
+              {loading ? "Sending..." : successMessage ? "Sent!" : "Send Invitation"}
             </Button>
           </DialogFooter>
         </form>
