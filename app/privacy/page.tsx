@@ -221,8 +221,8 @@ export default function PrivacyPage() {
                 If you have questions about this privacy policy or our data practices, please contact us:
               </p>
               <ul className="list-none space-y-2">
-                <li><strong>Email:</strong> privacy@recke.app</li>
-                <li><strong>Contact Form:</strong> <Link href="/contact" className="text-blue-600 hover:underline">recke.app/contact</Link></li>
+                <li><strong>Email:</strong> support@recke.io</li>
+                <li><strong>Contact Form:</strong> <Link href="/contact" className="text-blue-600 hover:underline">recke.io/contact</Link></li>
               </ul>
             </section>
           </div>

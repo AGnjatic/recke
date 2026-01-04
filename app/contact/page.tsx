@@ -56,10 +56,10 @@ export default function ContactPage() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Support</h3>
               <p className="text-sm text-gray-600 mb-4">
-                For general inquiries and support
+                For all inquiries and support
               </p>
-              <a href="mailto:help@recke.app" className="text-blue-600 hover:underline font-medium">
-                help@recke.app
+              <a href="mailto:support@recke.io" className="text-blue-600 hover:underline font-medium">
+                support@recke.io
               </a>
             </div>
 
@@ -71,8 +71,8 @@ export default function ContactPage() {
               <p className="text-sm text-gray-600 mb-4">
                 Share your ideas and suggestions
               </p>
-              <a href="mailto:feedback@recke.app" className="text-purple-600 hover:underline font-medium">
-                feedback@recke.app
+              <a href="mailto:support@recke.io" className="text-purple-600 hover:underline font-medium">
+                support@recke.io
               </a>
             </div>
 
@@ -103,7 +103,7 @@ export default function ContactPage() {
 
               <div className="grid gap-4">
                 <a 
-                  href="mailto:help@recke.app?subject=RECKE Support Request" 
+                  href="mailto:support@recke.io?subject=RECKE Support Request" 
                   className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all"
                 >
                   <div className="flex items-start gap-4">
@@ -118,14 +118,14 @@ export default function ContactPage() {
                         Account issues, technical problems, or general questions
                       </p>
                       <p className="text-sm font-medium text-blue-600">
-                        help@recke.app →
+                        support@recke.io →
                       </p>
                     </div>
                   </div>
                 </a>
 
                 <a 
-                  href="mailto:feedback@recke.app?subject=RECKE Feedback" 
+                  href="mailto:support@recke.io?subject=RECKE Feedback" 
                   className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all"
                 >
                   <div className="flex items-start gap-4">
@@ -140,14 +140,14 @@ export default function ContactPage() {
                         Ideas for improvements, feature suggestions, or general feedback
                       </p>
                       <p className="text-sm font-medium text-purple-600">
-                        feedback@recke.app →
+                        support@recke.io →
                       </p>
                     </div>
                   </div>
                 </a>
 
                 <a 
-                  href="mailto:privacy@recke.app?subject=Privacy Inquiry" 
+                  href="mailto:support@recke.io?subject=Privacy Inquiry" 
                   className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-green-300 hover:shadow-lg transition-all"
                 >
                   <div className="flex items-start gap-4">
@@ -164,14 +164,14 @@ export default function ContactPage() {
                         Data deletion, privacy concerns, or GDPR requests
                       </p>
                       <p className="text-sm font-medium text-green-600">
-                        privacy@recke.app →
+                        support@recke.io →
                       </p>
                     </div>
                   </div>
                 </a>
 
                 <a 
-                  href="mailto:legal@recke.app?subject=Legal Inquiry" 
+                  href="mailto:support@recke.io?subject=Legal Inquiry" 
                   className="group bg-white p-6 rounded-xl border border-gray-200 hover:border-red-300 hover:shadow-lg transition-all"
                 >
                   <div className="flex items-start gap-4">
@@ -188,7 +188,7 @@ export default function ContactPage() {
                         Terms of service questions or legal matters
                       </p>
                       <p className="text-sm font-medium text-red-600">
-                        legal@recke.app →
+                        support@recke.io →
                       </p>
                     </div>
                   </div>

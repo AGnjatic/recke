@@ -72,14 +72,14 @@ export default function HelpPage() {
               </div>
             </Link>
 
-            <a href="mailto:help@recke.app" className="group">
+            <a href="mailto:support@recke.io" className="group">
               <div className="bg-white p-6 rounded-2xl border border-gray-200 hover:border-green-200 hover:shadow-lg transition-all">
                 <Mail className="h-8 w-8 text-green-600 mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-green-600 transition-colors">
                   Email Us
                 </h3>
                 <p className="text-sm text-gray-600">
-                  help@recke.app
+                  support@recke.io
                 </p>
               </div>
             </a>

@@ -51,11 +51,7 @@ A complete set of launch-ready pages for RECKE with a modern, professional 2026 
 
 7. **Contact Page (`/app/contact/page.tsx`)** - ✅ NEW
    - Multiple contact methods
-   - Email addresses for different inquiries:
-     - help@recke.app (general support)
-     - feedback@recke.app (feature requests)
-     - privacy@recke.app (data/privacy)
-     - legal@recke.app (legal matters)
+   - Single email address for all inquiries: support@recke.io
    - Expected response times
    - Tips for better support
 
@@ -126,15 +122,12 @@ Product          Resources        Legal
 - [ ] Review and customize legal text for your jurisdiction
 - [ ] Add a status page (optional)
 
-### 📧 Email Addresses to Set Up
+### 📧 Email Address to Set Up
 
-Before launch, configure these email addresses:
-- `help@recke.app` - General support
-- `feedback@recke.app` - Feature requests
-- `privacy@recke.app` - Privacy/data requests
-- `legal@recke.app` - Legal inquiries
+Before launch, configure this email address:
+- `support@recke.io` - All inquiries (general support, feedback, privacy, legal)
 
-You can use email forwarding to route these all to your main inbox initially.
+You can use email forwarding or a support system to manage incoming emails.
 
 ### 🎯 Design Philosophy
 
