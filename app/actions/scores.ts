@@ -246,6 +246,101 @@ export async function getGroupScores(groupId: string, days: number = 30) {
   }
 }
 
+export async function addDailyScores(data: {
+  groupId: string
+  scores: {
+    userId: string
+    game: "ZIP" | "QUEENS"
+    points: number
+    date: string
+  }[]
+}) {
+  const session = await getServerSession(authOptions)
+  
+  if (!session?.user?.id) {
+    return { error: "Unauthorized" }
+  }
+
+  try {
+    // Verify user is a member of the group
+    const membership = await prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: {
+          groupId: data.groupId,
+          userId: session.user.id,
+        },
+      },
+    })
+
+    if (!membership) {
+      return { error: "You are not a member of this group" }
+    }
+
+    // Verify all players are members
+    const userIds = Array.from(new Set(data.scores.map(s => s.userId)))
+    const membershipChecks = await Promise.all(
+      userIds.map(userId =>
+        prisma.groupMember.findUnique({
+          where: {
+            groupId_userId: {
+              groupId: data.groupId,
+              userId,
+            },
+          },
+        })
+      )
+    )
+
+    if (membershipChecks.some(m => !m)) {
+      return { error: "One or more players are not members of this group" }
+    }
+
+    // Check for existing scores for this date to prevent duplicates
+    const existingScores = await prisma.score.findMany({
+      where: {
+        groupId: data.groupId,
+        date: new Date(data.scores[0].date),
+        OR: data.scores.map(s => ({
+          userId: s.userId,
+          game: s.game as GameType,
+        })),
+      },
+    })
+
+    if (existingScores.length > 0) {
+      const duplicateInfo = existingScores.map(s => 
+        `${s.game} (user ${s.userId.slice(0, 8)}...)`
+      ).join(", ")
+      return { error: `Scores already exist for this date: ${duplicateInfo}` }
+    }
+
+    // Create all scores in a transaction
+    const createdScores = await prisma.$transaction(
+      data.scores.map(score =>
+        prisma.score.create({
+          data: {
+            groupId: data.groupId,
+            userId: score.userId,
+            game: score.game as GameType,
+            points: score.points,
+            date: new Date(score.date),
+            enteredBy: session.user.id,
+          },
+          include: {
+            user: true,
+          },
+        })
+      )
+    )
+
+    revalidatePath(`/group/${data.groupId}`)
+    return { success: true, scores: createdScores }
+  } catch (error) {
+    console.error("Error adding daily scores:", error)
+    return { error: "Failed to add scores" }
+  }
+}
+
 export async function getGlobalLeaderboard() {
   try {
     // Get all users who opted in to global leaderboard

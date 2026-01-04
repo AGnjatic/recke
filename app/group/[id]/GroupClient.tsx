@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { InviteUserDialog } from "@/components/InviteUserDialog"
 import { GroupLeaderboard } from "@/components/GroupLeaderboard"
 import { TrendChart } from "@/components/TrendChart"
-import { InlineScoreTracker } from "@/components/InlineScoreTracker"
+import { DailyScoreEntry } from "@/components/DailyScoreEntry"
 import { ArrowLeft, UserPlus } from "lucide-react"
 import Image from "next/image"
 
@@ -96,10 +96,10 @@ export function GroupClient({
       </nav>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
-        {/* Inline Score Tracker */}
+        {/* Daily Score Entry */}
         <div>
           <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Track Scores</h2>
-          <InlineScoreTracker groupId={group.id} members={group.members} />
+          <DailyScoreEntry groupId={group.id} members={group.members} />
         </div>
 
         {/* Leaderboard */}
